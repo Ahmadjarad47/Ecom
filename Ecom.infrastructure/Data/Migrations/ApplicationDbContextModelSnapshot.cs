@@ -75,6 +75,9 @@ namespace Ecom.infrastructure.Data.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
+                    b.Property<string>("PictuerProdect")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
@@ -91,6 +94,7 @@ namespace Ecom.infrastructure.Data.Migrations
                             CategoryId = 2,
                             Description = "Description",
                             Name = "Prodect1",
+                            PictuerProdect = "https://",
                             Price = 200m
                         },
                         new
@@ -99,6 +103,7 @@ namespace Ecom.infrastructure.Data.Migrations
                             CategoryId = 1,
                             Description = "Description",
                             Name = "Prodect2",
+                            PictuerProdect = "https://",
                             Price = 2001m
                         });
                 });
@@ -106,17 +111,12 @@ namespace Ecom.infrastructure.Data.Migrations
             modelBuilder.Entity("Ecom.Core.Entities.Prodect", b =>
                 {
                     b.HasOne("Ecom.Core.Entities.Category", "Category")
-                        .WithMany("Prodects")
+                        .WithMany()
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Category");
-                });
-
-            modelBuilder.Entity("Ecom.Core.Entities.Category", b =>
-                {
-                    b.Navigation("Prodects");
                 });
 #pragma warning restore 612, 618
         }

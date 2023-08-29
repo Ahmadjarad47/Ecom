@@ -16,7 +16,7 @@ namespace Ecom.infrastructure.Data.Config
             builder.Property(x => x.Id).IsRequired();
             builder.Property(x => x.Name).IsRequired().HasMaxLength(30);
             builder.Property(x=>x.Price).HasColumnType("decimal(18,2)");
-            builder.HasOne(x => x.Category).WithMany(x => x.Prodects)
+            builder.HasOne(x => x.Category).WithMany()
                 .HasForeignKey(x => x.CategoryId);
 
             builder.HasData(new Prodect
@@ -24,14 +24,16 @@ namespace Ecom.infrastructure.Data.Config
                 Id = 1,
                 Name = "Prodect1",
                 Description = "Description",
-                Price=200,CategoryId=2
+                Price=200,CategoryId=2,
+                PictuerProdect="https://"
             }, new Prodect
             {
                 Id = 2,
                 Name = "Prodect2",
                 Description = "Description",
                 Price=2001,
-                CategoryId=1
+                CategoryId=1,
+                PictuerProdect = "https://"
             });
         }
     }

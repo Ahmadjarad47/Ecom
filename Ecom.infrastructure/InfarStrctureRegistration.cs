@@ -20,6 +20,7 @@ namespace Ecom.infrastructure
             services.AddScoped(typeof(IGenericRepositrie<>), typeof(GenericReposetroy<>));
             /*  services.AddScoped<ICategoryRepoetroy, CategoryRepositories>();*/
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+           
             services.AddDbContext<ApplicationDbContext>(options =>
             {
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));

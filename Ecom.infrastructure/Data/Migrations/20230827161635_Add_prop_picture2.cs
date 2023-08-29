@@ -2,10 +2,12 @@
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace Ecom.infrastructure.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class Add_prop_picture2 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -33,6 +35,7 @@ namespace Ecom.infrastructure.Data.Migrations
                     Name = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    PictuerProdect = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CategoryId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -44,6 +47,24 @@ namespace Ecom.infrastructure.Data.Migrations
                         principalTable: "Categories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Categories",
+                columns: new[] { "Id", "Description", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Description", "Name" },
+                    { 2, "Description", "Name2" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Prodects",
+                columns: new[] { "Id", "CategoryId", "Description", "Name", "PictuerProdect", "Price" },
+                values: new object[,]
+                {
+                    { 1, 2, "Description", "Prodect1", "https://", 200m },
+                    { 2, 1, "Description", "Prodect2", "https://", 2001m }
                 });
 
             migrationBuilder.CreateIndex(
