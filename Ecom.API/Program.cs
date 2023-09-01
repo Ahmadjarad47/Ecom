@@ -39,6 +39,14 @@ namespace Ecom.API
                 
                 
                 ));
+            builder.Services.AddCors(op =>
+            {
+                op.AddPolicy("CorsePolicy", pol =>
+                {
+                    pol.AllowAnyHeader();
+                    pol.AllowAnyMethod().WithOrigins("http://localhost:4200");
+                });
+            });
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -47,6 +55,7 @@ namespace Ecom.API
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+            app.UseCors("CorsePolicy");
             app.UseMiddleware<ExceptionMiddliWare>();
             app.UseStatusCodePagesWithReExecute("/errors/{0}");
             app.UseStaticFiles();

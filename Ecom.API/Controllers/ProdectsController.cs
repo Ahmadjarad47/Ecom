@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using Ecom.API.Error;
+using Ecom.API.Helper;
 using Ecom.Core.Dto;
 using Ecom.Core.Entities;
 using Ecom.Core.Interfaces;
+using Ecom.Core.Sharing;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,12 +24,24 @@ namespace Ecom.API.Controllers
         }
         [HttpGet("get-All-Prodect")]
 
-        public async Task<ActionResult> get()
+
+
+        public async Task<ActionResult> get([FromQuery] ProdcetParam prodcetParam)
         {
-            IEnumerable<Prodect> prodect=await ofWork.ProdectRepositry.GetAllAsync(x=>x.Category);
-            var res = mapper.Map<List<ProdectDTO>>(prodect);
-            return Ok(res);
+         IEnumerable<ProdectDTO> prodect=await ofWork.ProdectRepositry.GetAllAsync(prodcetParam);
+
+            
+
+            IReadOnlyList<ProdectDTO> res =
+                mapper.Map<IReadOnlyList<ProdectDTO>>(prodect);
+            int total = res.Count;
+            return Ok(new Pagination<ProdectDTO>(prodcetParam.pageNumber
+                ,prodcetParam.pageSize
+                        ,total,res));
         }
+
+
+
         [HttpGet("get-prodect-by-id/{id}")]
         [ProducesResponseType(typeof(ProdectDTO),StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(BaseComonentResponse),StatusCodes.Status404NotFound)]

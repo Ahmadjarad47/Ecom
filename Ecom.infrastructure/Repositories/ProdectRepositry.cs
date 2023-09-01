@@ -2,6 +2,7 @@
 using Ecom.Core.Dto;
 using Ecom.Core.Entities;
 using Ecom.Core.Interfaces;
+using Ecom.Core.Sharing;
 using Ecom.infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
@@ -29,7 +30,41 @@ namespace Ecom.infrastructure.Repositories
            
         }
 
-       
+        public async Task<IEnumerable<ProdectDTO>>GetAllAsync(ProdcetParam prodcetParam)
+        {
+
+            var allProdect = await context.Prodects.AsNoTracking()
+                .Include(m => m.Category)
+                .ToListAsync();
+            // paging
+
+            if (!string.IsNullOrEmpty(prodcetParam.serach))
+            {
+                allProdect=allProdect.Where(x=>x.Name.Contains(prodcetParam.serach)||
+                x.Description.Contains(prodcetParam.serach)).ToList();
+            }
+                //search by categoryId
+            if (prodcetParam.categoryId.HasValue)
+            {
+                allProdect = allProdect.Where(m => m.CategoryId.
+                Equals(prodcetParam.categoryId.Value)).ToList();
+            }
+            if (!string.IsNullOrEmpty(prodcetParam.sort))
+            {
+                allProdect = prodcetParam.sort switch
+                {
+                    "PriceAsync" => allProdect.OrderBy(m => m.Price).ToList(),
+                    "PriceDesc" => allProdect.OrderByDescending(m => m.Price).ToList(),
+                    _ => allProdect.OrderBy(m => m.Name).ToList(),
+                };
+            }  
+            allProdect = allProdect.Skip((prodcetParam.pageSize) * (prodcetParam.pageNumber - 1))
+                .Take(prodcetParam.pageSize).ToList();
+
+            List<ProdectDTO> result=mapper.Map<List<ProdectDTO>>(allProdect);
+
+            return result;
+        }
 
         public async Task<bool> AddAsync(CreateProdectDTO prodectDTO)
         {
