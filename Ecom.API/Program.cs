@@ -3,6 +3,7 @@ using Ecom.API.MiddliWare;
 using Ecom.infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.FileProviders;
+using StackExchange.Redis;
 using System.Reflection;
 
 namespace Ecom.API
@@ -39,6 +40,13 @@ namespace Ecom.API
                 
                 
                 ));
+            // confgure Redis
+            builder.Services.AddSingleton<IConnectionMultiplexer>(i =>
+            {
+                var confgur = ConfigurationOptions.Parse(builder.Configuration
+                    .GetConnectionString("Redis"),true);
+                return ConnectionMultiplexer.Connect(confgur);
+            });
             builder.Services.AddCors(op =>
             {
                 op.AddPolicy("CorsePolicy", pol =>

@@ -22,9 +22,7 @@ namespace Ecom.API.Controllers
             this.ofWork = ofWork;
             this.mapper = mapper;
         }
-        [HttpGet("get-All-Prodect")]
-
-
+       [HttpGet("get-all-prodect")]
 
         public async Task<ActionResult> get([FromQuery] ProdcetParam prodcetParam)
         {
@@ -34,7 +32,7 @@ namespace Ecom.API.Controllers
 
             IReadOnlyList<ProdectDTO> res =
                 mapper.Map<IReadOnlyList<ProdectDTO>>(prodect);
-            int total = res.Count;
+            int total = await ofWork.ProdectRepositry.CountAsync();
             return Ok(new Pagination<ProdectDTO>(prodcetParam.pageNumber
                 ,prodcetParam.pageSize
                         ,total,res));

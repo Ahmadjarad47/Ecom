@@ -29,6 +29,7 @@ namespace Ecom.API.Controllers
         public ActionResult GetServerError()
         {
             var prodect = context.Prodects.Find(4000);
+
             prodect.Name= "";
             return Ok(prodect);
         }

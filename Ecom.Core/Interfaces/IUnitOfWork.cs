@@ -10,5 +10,6 @@ namespace Ecom.Core.Interfaces
     {
         public ICategoryRepoetroy CategoryRepoetroy { get;  }
         public IProdectRepositry ProdectRepositry { get;  }
+        public IBraketRepositry BraketRepositry { get; }
     }
 }
