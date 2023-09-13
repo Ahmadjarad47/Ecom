@@ -1,4 +1,5 @@
-﻿using Ecom.Core.Entities;
+﻿using Ecom.Core.Dto;
+using Ecom.Core.Entities;
 using Ecom.Core.Interfaces;
 using StackExchange.Redis;
 using System;

@@ -1,0 +1,1 @@
+﻿using AutoMapper;using Ecom.Core.Dto;using Ecom.Core.Entities;namespace Ecom.API.MapperProfile{    public class AddressMapper:Profile    {        public AddressMapper()        {            CreateMap<Address,AddressDTO>().ReverseMap();            CreateMap<AddressDTO,Address>().ReverseMap();        }    }}

@@ -1,4 +1,6 @@
-﻿using Ecom.Core.Entities;
+﻿using AutoMapper;
+using Ecom.Core.Dto;
+using Ecom.Core.Entities;
 using Ecom.Core.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,10 +12,12 @@ namespace Ecom.API.Controllers
     public class BasketsController : ControllerBase
     {
         private readonly IUnitOfWork unitOfWork;
+        private readonly IMapper mapper;
 
-        public BasketsController(IUnitOfWork unitOfWork)
+        public BasketsController(IUnitOfWork unitOfWork,IMapper mapper)
         {
             this.unitOfWork = unitOfWork;
+            this.mapper = mapper;
         }
         [HttpGet("get-basket-item/{Id}")]
         public async Task<IActionResult> GetBasket(string Id)
@@ -24,11 +28,12 @@ namespace Ecom.API.Controllers
 
         }
         [HttpPost("update-basket")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> GetUpdateAsyncOfBasket(CustomerBasket customer)
+        
+        public async Task<IActionResult> GetUpdateAsyncOfBasket(CustomerBasketDTO customer)
         {
-            var basket = await unitOfWork.BraketRepositry.UpdateBasketAsync(customer);
-            return Ok();
+            var map= this.mapper.Map<CustomerBasketDTO, CustomerBasket>(customer);
+            var basket = await unitOfWork.BraketRepositry.UpdateBasketAsync(map);
+            return Ok(basket);
         }
         [HttpDelete("delete-basket-item/{Id}")]
         public async Task<IActionResult> DeleteBasket(string Id)
